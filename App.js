@@ -21,6 +21,8 @@ const images = [
   require("./images/image-9.jpeg")
 ]
 
+const IMAGE_THUMBNAIL_SIZE = 82
+
 const { width, height } = Dimensions.get("screen")
 
 export default function App() {
@@ -30,6 +32,7 @@ export default function App() {
       <FlatList
         data={images}
         key={(_, index) => index.toString()}
+        showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => {
           return (
             <View style={{ width, height }}>
@@ -41,6 +44,28 @@ export default function App() {
           )
         }}
         pagingEnabled
+        horizontal
+      />
+      <FlatList
+        data={images}
+        key={(_, index) => `thumbnail-${index.toString()}`}
+        showsHorizontalScrollIndicator={false}
+        style={{
+          position: "absolute",
+          bottom: 62
+        }}
+        renderItem={({ item }) => {
+          return (
+            <Image
+              source={item}
+              style={{
+                width: IMAGE_THUMBNAIL_SIZE,
+                height: IMAGE_THUMBNAIL_SIZE,
+                borderRadius: 12
+              }}
+            />
+          )
+        }}
         horizontal
       />
     </View>
