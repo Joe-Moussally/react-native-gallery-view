@@ -22,6 +22,7 @@ const images = [
 ]
 
 const IMAGE_THUMBNAIL_SIZE = 82
+const GAP = 10
 
 const { width, height } = Dimensions.get("screen")
 
@@ -61,12 +62,16 @@ export default function App() {
               style={{
                 width: IMAGE_THUMBNAIL_SIZE,
                 height: IMAGE_THUMBNAIL_SIZE,
-                borderRadius: 12
+                borderRadius: 18,
+                marginRight: GAP
               }}
             />
           )
         }}
         horizontal
+        contentContainerStyle={{
+          paddingHorizontal: GAP
+        }}
       />
     </View>
   )
