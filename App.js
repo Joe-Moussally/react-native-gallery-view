@@ -70,7 +70,7 @@ export default function App() {
           position: "absolute",
           bottom: 62
         }}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           return (
             <Image
               source={item}
@@ -78,7 +78,10 @@ export default function App() {
                 width: IMAGE_THUMBNAIL_SIZE,
                 height: IMAGE_THUMBNAIL_SIZE,
                 borderRadius: 18,
-                marginRight: GAP
+                marginRight: GAP,
+                borderWidth: 2,
+                borderColor:
+                  index === activeThumbnailIndex ? "white" : "transparent"
               }}
             />
           )
