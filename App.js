@@ -40,10 +40,23 @@ export default function App() {
       animated: true,
       offset: index * width
     })
+
+    if (
+      index * (GAP + IMAGE_THUMBNAIL_SIZE) - IMAGE_THUMBNAIL_SIZE / 2 >
+      width / 2
+    ) {
+      imagePickerRef?.current?.scrollToOffset({
+        animated: true,
+        offset:
+          index * (IMAGE_THUMBNAIL_SIZE + GAP) -
+          width / 2 +
+          IMAGE_THUMBNAIL_SIZE / 2
+      })
+    }
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1 }}>
       <StatusBar style="light" />
       <FlatList
         ref={imageViewRef}
@@ -52,8 +65,9 @@ export default function App() {
           setActiveThumbnailIndex(
             Math.floor(e.nativeEvent.contentOffset.x / width)
           )
+          scrollToActiveThumbnailIndex(e.nativeEvent.contentOffset.x / width)
         }}
-        key={(_, index) => index.toString()}
+        key={(_, index) => `image-${index}`}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => {
           return (
@@ -71,7 +85,7 @@ export default function App() {
       <FlatList
         ref={imagePickerRef}
         data={images}
-        key={(_, index) => `thumbnail-${index.toString()}`}
+        key={(_, index) => `thumbnail-${index}`}
         showsHorizontalScrollIndicator={false}
         style={{
           position: "absolute",
@@ -107,12 +121,3 @@ export default function App() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-})
