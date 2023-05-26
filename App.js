@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar"
+import { useRef, useState } from "react"
 import {
   Dimensions,
   FlatList,
@@ -27,11 +28,24 @@ const GAP = 10
 const { width, height } = Dimensions.get("screen")
 
 export default function App() {
+  const imageViewRef = useRef()
+  const imagePickerRef = useRef()
+
+  const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0)
+
+  const setActiveThumbnail = (index) => {
+    setActiveThumbnailIndex(index)
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
       <FlatList
+        ref={imageViewRef}
         data={images}
+        onMomentumScrollEnd={(e) => {
+          setActiveThumbnail(Math.floor(e.nativeEvent.contentOffset.x / width))
+        }}
         key={(_, index) => index.toString()}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => {
@@ -48,6 +62,7 @@ export default function App() {
         horizontal
       />
       <FlatList
+        ref={imagePickerRef}
         data={images}
         key={(_, index) => `thumbnail-${index.toString()}`}
         showsHorizontalScrollIndicator={false}
