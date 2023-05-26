@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View
 } from "react-native"
 
@@ -33,8 +34,12 @@ export default function App() {
 
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0)
 
-  const setActiveThumbnail = (index) => {
+  const scrollToActiveThumbnailIndex = (index) => {
     setActiveThumbnailIndex(index)
+    imageViewRef?.current?.scrollToOffset({
+      animated: true,
+      offset: index * width
+    })
   }
 
   return (
@@ -44,7 +49,9 @@ export default function App() {
         ref={imageViewRef}
         data={images}
         onMomentumScrollEnd={(e) => {
-          setActiveThumbnail(Math.floor(e.nativeEvent.contentOffset.x / width))
+          setActiveThumbnailIndex(
+            Math.floor(e.nativeEvent.contentOffset.x / width)
+          )
         }}
         key={(_, index) => index.toString()}
         showsHorizontalScrollIndicator={false}
@@ -72,18 +79,24 @@ export default function App() {
         }}
         renderItem={({ item, index }) => {
           return (
-            <Image
-              source={item}
-              style={{
-                width: IMAGE_THUMBNAIL_SIZE,
-                height: IMAGE_THUMBNAIL_SIZE,
-                borderRadius: 18,
-                marginRight: GAP,
-                borderWidth: 2,
-                borderColor:
-                  index === activeThumbnailIndex ? "white" : "transparent"
+            <TouchableOpacity
+              onPress={() => {
+                scrollToActiveThumbnailIndex(index)
               }}
-            />
+            >
+              <Image
+                source={item}
+                style={{
+                  width: IMAGE_THUMBNAIL_SIZE,
+                  height: IMAGE_THUMBNAIL_SIZE,
+                  borderRadius: 18,
+                  marginRight: GAP,
+                  borderWidth: 2,
+                  borderColor:
+                    index === activeThumbnailIndex ? "white" : "transparent"
+                }}
+              />
+            </TouchableOpacity>
           )
         }}
         horizontal
