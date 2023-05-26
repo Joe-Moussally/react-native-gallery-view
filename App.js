@@ -62,12 +62,12 @@ export default function App() {
         ref={imageViewRef}
         data={images}
         onMomentumScrollEnd={(e) => {
-          setActiveThumbnailIndex(
-            Math.floor(e.nativeEvent.contentOffset.x / width)
-          )
-          scrollToActiveThumbnailIndex(e.nativeEvent.contentOffset.x / width)
+          const i = e.nativeEvent.contentOffset.x / width
+          setActiveThumbnailIndex(Math.floor(i))
+          scrollToActiveThumbnailIndex(i)
         }}
-        key={(_, index) => `image-${index}`}
+        key="image-view"
+        keyExtractor={(_, index) => `image-${index}`}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => {
           return (
@@ -85,7 +85,8 @@ export default function App() {
       <FlatList
         ref={imagePickerRef}
         data={images}
-        key={(_, index) => `thumbnail-${index}`}
+        key="image-picker"
+        keyExtractor={(_, index) => `thumbnail-${index}`}
         showsHorizontalScrollIndicator={false}
         style={{
           position: "absolute",
