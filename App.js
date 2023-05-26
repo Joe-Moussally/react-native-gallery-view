@@ -29,11 +29,14 @@ const GAP = 10
 const { width, height } = Dimensions.get("screen")
 
 export default function App() {
+  // flatlist reds
   const imageViewRef = useRef()
   const imagePickerRef = useRef()
 
+  // active image index
   const [activeThumbnailIndex, setActiveThumbnailIndex] = useState(0)
 
+  // scroll to active image
   const scrollToActiveThumbnailIndex = (index) => {
     setActiveThumbnailIndex(index)
     imageViewRef?.current?.scrollToOffset({
@@ -41,6 +44,8 @@ export default function App() {
       offset: index * width
     })
 
+    // image active index postion > screen width/2 do not scroll
+    // !!! to avoid scroll for the first 2 or 3 thumbnail where their position is < screen width/2 !!!
     if (
       index * (GAP + IMAGE_THUMBNAIL_SIZE) - IMAGE_THUMBNAIL_SIZE / 2 >
       width / 2
